@@ -1,13 +1,16 @@
-const { logInfo } = require('../../utils/logger/logger.util');
-let restaurants: object;
+let restaurants: any;
+
+// interface Connection {
+//   db?: string
+// }
 
 module.exports = class RestaurantsDAO {
-  static async injectDB(conn: object) {
+  static async injectDB(conn: any) {
     if (restaurants) return;
     try {
       const dbName = process.env.DB_NAME || 'development';
       restaurants = await conn.db(dbName).collection('restaurants');
-      logInfo({ message: 'restaurantsDAO connected' });
+      console.info({ message: 'restaurantsDAO connected' });
     } catch (e) {
       console.error(`Unable to establish collection handles in restaurantsDAO: ${e}`);
     }
