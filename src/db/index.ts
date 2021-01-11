@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const { MongoClient } = require('mongodb');
-import {AddressInfo} from 'net'
-const {app} = require('../app');
-const RestaurantsDAO = require('./dao/RestaurantsDAO');
+import { AddressInfo } from 'net'
+import { app } from '../server/index';
+import RestaurantsDAO from './dao/RestaurantsDAO';
 const mongoURI = process.env.DB_URI || 'mongodb://localhost:27017/atxhh-dev';
 
 const client = new MongoClient(mongoURI, {

@@ -1,10 +1,7 @@
+const ObjectId = require('mongodb').ObjectId;
 let restaurants: any;
 
-// interface Connection {
-//   db?: string
-// }
-
-module.exports = class RestaurantsDAO {
+export default class RestaurantsDAO {
   static async injectDB(conn: any) {
     if (restaurants) return;
     try {
@@ -17,13 +14,41 @@ module.exports = class RestaurantsDAO {
   }
 
   static async getRestaurantsFromDB(query: object = {}, queryOptions: object = {}) {
-    let cursor;
     try {
-      cursor = await restaurants.find(query, queryOptions);
+      const cursor = await restaurants.find(query, queryOptions);
+      return cursor.toArray();
     } catch (e) {
       console.error('Error in getRestaurantsFromDB()', e);
       return [];
     }
-    return cursor.toArray();
+  }
+
+  static async findRestaurant(id: string) {
+    try {
+      const _id = ObjectId(id);
+      return await restaurants.findOne({ _id });
+    } catch (e) {
+      console.error('Error in findRestaurant()', e);
+      return null;
+    }
+  }
+  
+  static async createNewRestaurant(newRestaurant: object) {
+    try {
+      return await restaurants.insertOne(newRestaurant);
+    } catch (e) {
+      console.error('Error in createNewRestaurant()', e);
+      return null;
+    }
+  }
+
+  static async updateRestaurant(id: string, update: object) {
+    try {
+      const _id = ObjectId(id);
+      return await restaurants.updateOne({ _id }, { $set: update });
+    } catch (e) {
+      console.error('Error in createNewRestaurant()', e);
+      return null;
+    }
   }
 };
