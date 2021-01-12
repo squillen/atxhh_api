@@ -5,12 +5,7 @@
     "sourceMap": true,                     
     "outDir": "./build",                        
     "rootDir": "./src",                       
-    "strict": true,                           
-    "moduleResolution": "node",            
-    "esModuleInterop": true,                  
     "experimentalDecorators": true,        
-    "emitDecoratorMetadata": true,         
-    "skipLibCheck": true,                     
-    "forceConsistentCasingInFileNames": true  
+    "emitDecoratorMetadata": true        
   }
 }
