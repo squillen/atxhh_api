@@ -1,19 +1,22 @@
 import express from 'express';
-import jwt from 'jsonwebtoken';
 import * as bodyParser from 'body-parser';
-import tenants from './helpers/tenants';
 
 // ROUTES
-import restaurants from '../server/restaurants/restaurants.route';
+import restaurants from './restaurants/restaurants.route';
 
 const app = express();
+app.use(express.static("public"))
 app.use(bodyParser.json({
-    limit: '50mb',
-    verify(req: any, res, buf, encoding) {
-        req.rawBody = buf;
-    }
+  limit: '50mb',
+  verify(req: any, res, buf, encoding) {
+      req.rawBody = buf;
+  }
 }));
 
-app.use('/restaurants', restaurants)
+app.get("/", function (req, res) {
+  res.send('server up!')
+})
+
+app.use('/api/restaurants', restaurants)
 
 export { app };
