@@ -1,6 +1,6 @@
 interface Restaurant {
   name: string;
-  description: string;
+  description: string[];
   happy_hour_days: string;
   start_time: string;
   end_time: string;

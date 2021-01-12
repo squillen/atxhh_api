@@ -23,16 +23,25 @@ export default class RestaurantsDAO {
     }
   }
 
-  static async findRestaurant(id: string) {
+  static async findRestaurantByID(id: string) {
     try {
       const _id = ObjectId(id);
       return await restaurants.findOne({ _id });
     } catch (e) {
-      console.error('Error in findRestaurant()', e);
+      console.error('Error in findRestaurantByID()', e);
       return null;
     }
   }
-  
+
+  static async findRestaurantByAddress(address: string) {
+    try {
+      return await restaurants.findOne({ address });
+    } catch (e) {
+      console.error('Error in findRestaurantByAddress()', e);
+      return null;
+    }
+  }
+
   static async createNewRestaurant(newRestaurant: object) {
     try {
       return await restaurants.insertOne(newRestaurant);

@@ -4,7 +4,6 @@ import Restaurant from './restaurant.interface';
 
 class RestaurantController {
 
-  // /
   async getRestaurantsFromDB(req: express.Request, res: express.Response) {
     try {
       const restaurants = await RestaurantsDAO.getRestaurantsFromDB();
@@ -14,10 +13,10 @@ class RestaurantController {
     }
   }
 
-  async findRestaurant(req: express.Request, res: express.Response) {
+  async findRestaurantByID(req: express.Request, res: express.Response) {
     try {
       const { params: { id } } = req;
-      const foundRestaurant = await RestaurantsDAO.findRestaurant(id as string);
+      const foundRestaurant = await RestaurantsDAO.findRestaurantByID(id as string);
       return res.json(foundRestaurant);
     } catch (error) {
       return res.json({ error });
@@ -27,10 +26,14 @@ class RestaurantController {
   async createNewRestaurant(req: express.Request, res: express.Response) {
     try {
       const restaurant: Restaurant = req.body;
-      const result = await RestaurantsDAO.createNewRestaurant(restaurant);
-      res.json(result);
+      const restaurantAlreadyExists = await RestaurantsDAO.findRestaurantByAddress(restaurant.address);
+      if (restaurantAlreadyExists._id) throw new Error('A restaurant by that address already exists');
+      else {
+        const result = await RestaurantsDAO.createNewRestaurant(restaurant);
+        res.json(result);
+      }
     } catch (error) {
-      res.json(error)
+      res.send(error);
     }
   }
 
