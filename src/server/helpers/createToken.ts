@@ -2,7 +2,6 @@ const tenants = {
   admin: {
     issuer: 'admin',
     roles: ['administrator'],
-    secret: '',
   }
 }
 const jwt = require('jsonwebtoken');
