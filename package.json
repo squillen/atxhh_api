@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "rm -rf build/*",
-    "build": "tsc --build tsconfig.json && cp -rf package.json build/package.json",
+    "build": "tsc",
     "prestart": "npm run build",
     "start": "ts-node ."
   },
