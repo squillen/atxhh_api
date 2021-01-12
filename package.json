@@ -8,7 +8,7 @@
     "prebuild": "rm -rf build/*",
     "build": "tsc --build tsconfig.json && cp -rf package.json build/package.json",
     "prestart": "npm run build",
-    "start": "ts-node-dev --respawn ."
+    "start": "ts-node ."
   },
   "author": "",
   "license": "ISC",
