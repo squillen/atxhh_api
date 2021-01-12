@@ -1,5 +1,5 @@
 import * as express from 'express';
-import jwt from 'jsonwebtoken'
+import * as jwt from 'jsonwebtoken'
 import tenants from './tenants'
 
 type Tenant = {

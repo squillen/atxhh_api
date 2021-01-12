@@ -1,10 +1,10 @@
+const jwt = require('jsonwebtoken');
 const tenants = {
   admin: {
     issuer: 'admin',
     roles: ['administrator'],
   }
 }
-const jwt = require('jsonwebtoken');
 const privateKey = '';
 console.log('privateKey', privateKey)
 
