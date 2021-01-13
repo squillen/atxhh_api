@@ -9,9 +9,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "rm -rf build/*",
+    "postinstall": "tsc",
     "build": "tsc",
     "prestart": "npm run build",
-    "start": "ts-node ."
+    "start": "node build/db/index.js",
+    "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
   "author": "",
   "license": "ISC",
