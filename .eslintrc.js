@@ -8,8 +8,11 @@ module.exports = {
     'plugin:react/recommended',
     'airbnb',
     'eslint:recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:import/typescript',
   ],
   globals: {
     Atomics: 'readonly',
@@ -21,6 +24,7 @@ module.exports = {
       jsx: true,
     },
     ecmaVersion: 2018,
+    project: ['./tsconfig.json'],
     sourceType: 'module',
   },
   plugins: [
@@ -28,6 +32,22 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-    '@typescript-eslint/rule-name': 'error',
+    "@typescript-eslint/await-thenable": "error",
+    "class-methods-use-this": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   },
+  settings: {
+    "import/parsers": {
+      "@typescript-eslint/parser": ['.ts', '.js']
+    }
+  }
 };

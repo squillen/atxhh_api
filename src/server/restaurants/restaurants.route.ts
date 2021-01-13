@@ -1,8 +1,11 @@
-const { Router } = require('express');
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { Router } from 'express';
 import controller from './restaurants.controller';
-import { verifyToken } from '../helpers/auth' 
+import { verifyToken } from '../helpers/auth';
 
-const router = new Router();
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const router = Router();
 
 router.get('/', controller.getRestaurantsFromDB);
 router.post('/', verifyToken, controller.createNewRestaurant);

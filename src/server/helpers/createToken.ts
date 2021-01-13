@@ -1,18 +1,19 @@
-const jwt = require('jsonwebtoken');
+import jwt = require('jsonwebtoken');
+
 const tenants = {
   admin: {
     issuer: 'admin',
     roles: ['administrator'],
-  }
-}
+  },
+};
 const privateKey = '';
-console.log('privateKey', privateKey)
+console.log('privateKey', privateKey);
 
 const token = jwt.sign(tenants.admin, privateKey);
-console.log('token :>> ', token)
+console.log('token :>> ', token);
 
-const signedToken = ''
+const signedToken = '';
 
-const decoded = jwt.verify(signedToken, privateKey)
+const decoded = jwt.verify(signedToken, privateKey);
 
-console.log('decoded :>> ', decoded)
+console.log('decoded :>> ', decoded);

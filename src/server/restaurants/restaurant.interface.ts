@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 interface Restaurant {
   name: string;
   description: string[];
@@ -6,8 +7,8 @@ interface Restaurant {
   end_time: string;
   percent_off_drinks: number;
   percent_off_food: number;
-  coordinates: {};
+  coordinates: Record<string, unknown>;
   address: string;
 }
- 
+
 export default Restaurant;

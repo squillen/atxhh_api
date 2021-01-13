@@ -1,15 +1,23 @@
-const ObjectId = require('mongodb').ObjectId;
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { ObjectId } from 'mongodb';
+
 let restaurants: any;
 
 export default class RestaurantsDAO {
   static async injectDB(conn: any) {
     if (restaurants) return;
     try {
-      const dbName = process.env.DB_NAME || 'development';
+      const dbName: string = process.env.DB_NAME || 'development';
       restaurants = await conn.db(dbName).collection('restaurants');
       console.info({ message: 'restaurantsDAO connected' });
     } catch (e) {
-      console.error(`Unable to establish collection handles in restaurantsDAO: ${e}`);
+      console.error('Unable to establish collection handles in restaurantsDAO');
     }
   }
 
@@ -60,4 +68,4 @@ export default class RestaurantsDAO {
       return null;
     }
   }
-};
+}
