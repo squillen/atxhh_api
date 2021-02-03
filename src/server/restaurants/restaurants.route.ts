@@ -1,15 +1,17 @@
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
-import controller from './restaurants.controller';
+import {
+  getRestaurantsFromDB,
+  createNewRestaurant,
+  findRestaurantByID,
+  updateRestaurant,
+} from './restaurants.controller';
 import { verifyToken } from '../helpers/auth';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const router = Router();
 
-router.get('/', controller.getRestaurantsFromDB);
-router.post('/', verifyToken, controller.createNewRestaurant);
-router.get('/:id', controller.findRestaurantByID);
-router.patch('/:id', verifyToken, controller.updateRestaurant);
+router.get('/', getRestaurantsFromDB);
+router.post('/', verifyToken, createNewRestaurant);
+router.get('/:id', findRestaurantByID);
+router.patch('/:id', verifyToken, updateRestaurant);
 
 export default router;

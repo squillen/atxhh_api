@@ -34,6 +34,9 @@ module.exports = {
   rules: {
     "@typescript-eslint/await-thenable": "error",
     "class-methods-use-this": 0,
+    "no-console": 0,
+    "max-len": 0,
+    "no-underscore-dangle": 0,
     "import/extensions": [
       "error",
       "ignorePackages",

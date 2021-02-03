@@ -1,32 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable max-len */
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
-import tenants from './tenants';
-
-type Tenant = {
-  issuer: string;
-  roles: string[];
-  secret: string;
-  iat: string | undefined;
-}
+import { Tenant, tenants } from './tenants';
 
 export function authorizeToken(token: string, issuer: string):
 {
   error: string,
   authorized: boolean
 } {
-  const { secret } = tenants[issuer];
+  const { username } = tenants[issuer];
   const result = { authorized: false, error: 'Unable to verify with the supplied token' };
 
-  if (!secret) {
+  if (!username) {
     result.error = 'No matching issuer.';
     return result;
   }
   try {
-    const verification = jwt.verify(token, secret) as Tenant;
+    const verification = jwt.verify(token, process.env.ADMIN_SECRET as string) as Tenant;
     result.authorized = !!verification.iat;
   } catch (e) {
     console.error(e);
@@ -34,7 +23,11 @@ export function authorizeToken(token: string, issuer: string):
   return result;
 }
 
-export function verifyToken(req: express.Request, res: express.Response, next: express.NextFunction) {
+export function verifyToken(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+): void {
   const { authorization, issuer } = req.headers;
   if (authorization) {
     const bearer = authorization.split(' ');

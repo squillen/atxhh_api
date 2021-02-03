@@ -1,14 +1,14 @@
-/* eslint-disable camelcase */
-interface Restaurant {
+import { ObjectId } from 'mongodb';
+
+export interface RestaurantInterface {
+  _id: ObjectId;
   name: string;
   description: string[];
-  happy_hour_days: string;
-  start_time: string;
-  end_time: string;
-  percent_off_drinks: number;
-  percent_off_food: number;
+  happyHourDays: string;
+  startTime: string;
+  endTime: string;
+  percentOffDrinks: number;
+  percentOffFood: number;
   coordinates: Record<string, unknown>;
   address: string;
 }
-
-export default Restaurant;

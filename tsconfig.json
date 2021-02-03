@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es6",                          
-    "module": "commonjs",                     
+    "target": "es2018",
+    "module": "commonjs",   
+    "moduleResolution": "node",
+    "esModuleInterop": true,            
     "sourceMap": true,                     
     "outDir": "./build",                        
-    "rootDir": "./src",                       
-    "experimentalDecorators": true,        
-    "emitDecoratorMetadata": true        
+    "rootDir": "./src",        
+    "forceConsistentCasingInFileNames": true,
+    "strict": true       
   }
 }

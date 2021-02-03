@@ -1,57 +1,49 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import * as express from 'express';
+import { RequestHandler } from 'express';
 import RestaurantsDAO from '../../db/dao/RestaurantsDAO';
-import Restaurant from './restaurant.interface';
+import { RestaurantInterface } from './restaurant.interface';
 
-class RestaurantController {
-  async getRestaurantsFromDB(_req: express.Request, res: express.Response) {
-    try {
-      const restaurants = await RestaurantsDAO.getRestaurantsFromDB();
-      return res.json(restaurants);
-    } catch (error) {
-      return res.json({ error });
-    }
+export const getRestaurantsFromDB: RequestHandler = async (req, res) => {
+  try {
+    const restaurants = await RestaurantsDAO.getRestaurantsFromDB();
+    res.json(restaurants);
+  } catch (error) {
+    res.json({ error: error as Error });
   }
+};
 
-  async findRestaurantByID(req: express.Request, res: express.Response) {
-    try {
-      const { params: { id } } = req;
-      const foundRestaurant = await RestaurantsDAO.findRestaurantByID(id);
-      return res.json(foundRestaurant);
-    } catch (error) {
-      return res.json({ error });
-    }
+export const findRestaurantByID: RequestHandler = async (req, res) => {
+  try {
+    const { params: { id } } = req;
+    const foundRestaurant = await RestaurantsDAO.findRestaurantByID(id);
+    res.json(foundRestaurant);
+  } catch (error) {
+    res.json({ error: error as Error });
   }
+};
 
-  async createNewRestaurant(req: express.Request, res: express.Response) {
-    try {
-      const restaurant: Restaurant = req.body;
-      const restaurantAlreadyExists = await RestaurantsDAO.findRestaurantByAddress(restaurant.address);
-      if (restaurantAlreadyExists._id) throw new Error('A restaurant by that address already exists');
-      else {
-        const result = await RestaurantsDAO.createNewRestaurant(restaurant);
-        res.json(result);
-      }
-    } catch (error) {
-      res.send(error);
-    }
-  }
-
-  async updateRestaurant(req: express.Request, res: express.Response) {
-    try {
-      const { params: { id }, body } = req;
-      if (!id) throw Error('must include restaurant _id');
-      const result = await RestaurantsDAO.updateRestaurant(id, body);
+export const createNewRestaurant: RequestHandler = async (req, res) => {
+  try {
+    const restaurant = req.body as RestaurantInterface;
+    const restaurantAlreadyExists = await RestaurantsDAO.findRestaurantByAddress(restaurant.address) as RestaurantInterface;
+    if (restaurantAlreadyExists._id) throw new Error('A restaurant by that address already exists');
+    else {
+      const result = await RestaurantsDAO.createNewRestaurant(restaurant);
       res.json(result);
-    } catch (error) {
-      res.json(error);
     }
+  } catch (error) {
+    res.json({ error: error as Error });
   }
+};
 
-  //
-}
-
-export default new RestaurantController();
+export const updateRestaurant: RequestHandler = async (req, res) => {
+  try {
+    const { params: { id } } = req;
+    const update = (req.body as RestaurantInterface);
+    console.log('update', update);
+    if (!id) throw Error('must include restaurant _id');
+    const result = await RestaurantsDAO.updateRestaurant(id, update);
+    res.json(result);
+  } catch (error) {
+    res.json(error);
+  }
+};

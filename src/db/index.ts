@@ -1,38 +1,37 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { AddressInfo } from 'net';
-import mongo, { MongoClient } from 'mongodb';
+import mongo from 'mongodb';
+import dotenv from 'dotenv';
 import app from '../server';
 import RestaurantsDAO from './dao/RestaurantsDAO';
 
-require('dotenv').config();
+dotenv.config({ path: `${__dirname}/.env` });
 
 const mongoURI: string = process.env.DB_URI || 'mongodb://localhost:27017/atxhh-dev';
-const appPort = (process.env.PORT || 5000);
-const client: mongo.MongoClient = new MongoClient(mongoURI, {
+const appPort = process.env.PORT || 5000;
+const client: mongo.MongoClient = new mongo.MongoClient(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  poolSize: 50,
   connectTimeoutMS: 3000,
-  keepAlive: 1,
+  keepAlive: true,
 });
 
-async function connect() {
+async function connect(): Promise<void> {
   try {
     await client.connect();
-    const connections = [
-      RestaurantsDAO.injectDB(client),
-    ];
+    const connections = [RestaurantsDAO.injectDB(client)];
     await Promise.all(connections);
+    let port: number;
+    let address: string;
     const server = app.listen(appPort as number, '0.0.0.0', () => {
-      const { port, address } = server.address() as AddressInfo;
-      console.log(`Server listening on: http://${address}:${port}`);
+      ({ port, address } = server.address() as AddressInfo);
+      const url = `http://${address}:${port}`;
+      console.log(`Server listening on: ${url}`);
     });
   } catch (e) {
-    console.error({ message: e.stack });
+    console.error({ message: (e as Error).stack });
   }
 }
 
 connect().catch(console.error);
+
+export default connect;

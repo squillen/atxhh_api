@@ -1,29 +1,25 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { ObjectId } from 'mongodb';
+import {
+  Collection, MongoClient, ObjectId,
+} from 'mongodb';
+import { RestaurantInterface } from '../../server/restaurants/restaurant.interface';
 
-let restaurants: any;
+let restaurants: Collection<RestaurantInterface>;
 
 export default class RestaurantsDAO {
-  static async injectDB(conn: any) {
+  static injectDB(conn: MongoClient): void {
     if (restaurants) return;
     try {
       const dbName: string = process.env.DB_NAME || 'development';
-      restaurants = await conn.db(dbName).collection('restaurants');
+      restaurants = conn.db(dbName).collection('restaurants');
       console.info({ message: 'restaurantsDAO connected' });
     } catch (e) {
       console.error('Unable to establish collection handles in restaurantsDAO');
     }
   }
 
-  static async getRestaurantsFromDB(query: object = {}, queryOptions: object = {}) {
+  static async getRestaurantsFromDB(): Promise<RestaurantInterface[]> {
     try {
-      const cursor = await restaurants.find(query, queryOptions);
+      const cursor = restaurants.find();
       return cursor.toArray();
     } catch (e) {
       console.error('Error in getRestaurantsFromDB()', e);
@@ -31,9 +27,9 @@ export default class RestaurantsDAO {
     }
   }
 
-  static async findRestaurantByID(id: string) {
+  static async findRestaurantByID(id: string): Promise<RestaurantInterface | null> {
     try {
-      const _id = ObjectId(id);
+      const _id = new ObjectId(id);
       return await restaurants.findOne({ _id });
     } catch (e) {
       console.error('Error in findRestaurantByID()', e);
@@ -41,7 +37,7 @@ export default class RestaurantsDAO {
     }
   }
 
-  static async findRestaurantByAddress(address: string) {
+  static async findRestaurantByAddress(address: string): Promise<RestaurantInterface | null> {
     try {
       return await restaurants.findOne({ address });
     } catch (e) {
@@ -50,7 +46,7 @@ export default class RestaurantsDAO {
     }
   }
 
-  static async createNewRestaurant(newRestaurant: object) {
+  static async createNewRestaurant(newRestaurant: RestaurantInterface): Promise<unknown> {
     try {
       return await restaurants.insertOne(newRestaurant);
     } catch (e) {
@@ -59,9 +55,9 @@ export default class RestaurantsDAO {
     }
   }
 
-  static async updateRestaurant(id: string, update: object) {
+  static async updateRestaurant(id: string, update: RestaurantInterface): Promise<unknown> {
     try {
-      const _id = ObjectId(id);
+      const _id = new ObjectId(id);
       return await restaurants.updateOne({ _id }, { $set: update });
     } catch (e) {
       console.error('Error in createNewRestaurant()', e);

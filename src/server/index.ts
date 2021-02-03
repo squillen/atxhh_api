@@ -1,12 +1,12 @@
-import * as express from 'express';
-import * as bodyParser from 'body-parser';
+import express, { Request, Response, NextFunction } from 'express';
+import { json } from 'body-parser';
 
 // ROUTES
 import restaurants from './restaurants/restaurants.route';
 
 const app = express();
 app.use(express.static('public'));
-app.use(bodyParser.json({
+app.use(json({
   limit: '50mb',
 }));
 
@@ -15,5 +15,9 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/restaurants', restaurants);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  res.status(500).json({ message: err.message });
+});
 
 export default app;
