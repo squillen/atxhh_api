@@ -1,7 +1,5 @@
-import { ObjectId } from 'mongodb';
-
 export interface RestaurantInterface {
-  _id: ObjectId;
+  id: string
   name: string;
   description: string[];
   happyHourDays: string;

@@ -1,0 +1,95 @@
+type Query {
+  restaurants(
+    filter: String
+    skip: Int
+    take: Int
+    orderBy: RestaurantOrderByInput
+  ): Restaurants!
+  restaurant(id: ID!): Restaurant
+}
+
+type Mutation {
+  create(
+    name: String!
+    url: String!
+    description: [String!]!
+    happyHourDays: String!
+    startTime: String!
+    endTime: String!
+    percentOffDrinks: Int
+    percentOffFood: Int
+    coordinates: [Int!]!
+    address: String!
+  ): Restaurant!
+
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  vote(restaurantID: ID!): Vote
+}
+
+type Restaurant {
+  id: ID!
+  name: String!
+  url: String!
+  description: [String!]!
+  happyHourDays: String!
+  startTime: String!
+  endTime: String!
+  percentOffDrinks: Int
+  percentOffFood: Int
+  coordinates: Coordinates!
+  address: String!
+  createdAt: String!
+  postedBy: User
+  votes: [Vote!]!
+}
+
+type Restaurants {
+  restaurants: [Restaurant!]!
+  count: Int!
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  Role: Roles
+  restaurants: [Restaurant!]!
+}
+
+type Subscription {
+  newRestaurant: Restaurant
+  newVote: Vote
+}
+
+type Vote {
+  id: ID!
+  restaurant: Restaurant!
+  user: User!
+}
+
+type Coordinates {
+  lat: Int
+  lng: Int
+}
+
+input RestaurantOrderByInput {
+  description: Sort
+  url: Sort
+  createdAt: Sort
+}
+
+enum Sort {
+  asc
+  desc
+}
+
+enum Roles {
+  USER
+  ADMIN
+}

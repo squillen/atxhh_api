@@ -1,0 +1,49 @@
+// npx prisma migrate dev --name 'init' --preview-feature
+// npx prisma db push --preview-feature (only to fix shadow db issue)
+// npx prisma generate
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Restaurant {
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  name             String[] @unique
+  description      String
+  happyHourDays    String
+  startTime        String
+  endTime          String
+  percentOffDrinks Int
+  percentOffFood   Int
+  coordinates      String[]
+  address          String
+  url              String
+  createdBy        User?    @relation(fields: [createdByID], references: [id])
+  createdByID      Int?
+  votes            Vote[]
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String       @unique
+  password    String
+  restaurants Restaurant[]
+  votes       Vote[]
+}
+
+model Vote {
+  id            Int        @id @default(autoincrement())
+  link          Restaurant @relation(fields: [restaurauntID], references: [id])
+  restaurauntID Int
+  user          User       @relation(fields: [userID], references: [id])
+  userID        Int
+
+  @@unique([restaurauntID, userID])
+}

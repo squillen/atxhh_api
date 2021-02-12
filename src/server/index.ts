@@ -1,23 +1,41 @@
-import express, { Request, Response, NextFunction } from 'express';
-import { json } from 'body-parser';
+import { ApolloServer, PubSub } from "apollo-server";
+import { PrismaClient } from "@prisma/client";
+import fs from "fs";
+import path from "path";
+import { getUserId } from "./utils";
 
-// ROUTES
-import restaurants from './restaurants/restaurants.route';
+const pubsub = new PubSub();
 
-const app = express();
-app.use(express.static('public'));
-app.use(json({
-  limit: '50mb',
-}));
+// RESOLVERS
+const Query = require("./resolvers/Query");
+// const Mutation = require("./resolvers/Mutation");
+// const User = require("./resolvers/User");
+// const Link = require("./resolvers/Link");
+// const Subscription = require("./resolvers/Subscription");
+// const Vote = require("./resolvers/Vote");
 
-app.get('/', (req, res) => {
-  res.send('server up!');
+const resolvers = {
+  Query,
+  // Mutation,
+  // User,
+  // Link,
+  // Subscription,
+  // Vote,
+};
+
+const prisma = new PrismaClient();
+
+const server = new ApolloServer({
+  typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
+  resolvers,
+  context: ({ req }) => {
+    return {
+      ...req,
+      prisma,
+      pubsub,
+      userId: req?.headers?.authorization ? getUserId(req, null) : null,
+    };
+  },
 });
 
-app.use('/api/restaurants', restaurants);
-
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).json({ message: err.message });
-});
-
-export default app;
+server.listen().then(({ url }) => console.log(`Server is running on ${url}`));
