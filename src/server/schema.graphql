@@ -85,8 +85,8 @@ input RestaurantOrderByInput {
 }
 
 enum Sort {
-  asc
-  desc
+  ASC
+  DESC
 }
 
 enum Roles {

@@ -15,7 +15,7 @@ model Restaurant {
   id               Int      @id @default(autoincrement())
   createdAt        DateTime @default(now())
   name             String[] @unique
-  description      String
+  description      String[]
   happyHourDays    String
   startTime        String
   endTime          String

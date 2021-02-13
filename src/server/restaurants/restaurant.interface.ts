@@ -7,6 +7,6 @@ export interface RestaurantInterface {
   endTime: string;
   percentOffDrinks: number;
   percentOffFood: number;
-  coordinates: Record<string, unknown>;
+  coordinates: [number, number];
   address: string;
 }

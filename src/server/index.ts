@@ -7,18 +7,18 @@ import { getUserId } from "./utils";
 const pubsub = new PubSub();
 
 // RESOLVERS
-const Query = require("./resolvers/Query");
-// const Mutation = require("./resolvers/Mutation");
-// const User = require("./resolvers/User");
-// const Link = require("./resolvers/Link");
-// const Subscription = require("./resolvers/Subscription");
-// const Vote = require("./resolvers/Vote");
+import Query from "./resolvers/Query";
+import Mutation from "./resolvers/Mutation";
+import Restaurant from "./resolvers/Restaurant";
+// import User from "./resolvers/User";
+// import Subscription from "./resolvers/Subscription";
+// import Vote from "./resolvers/Vote";
 
 const resolvers = {
   Query,
-  // Mutation,
+  Mutation,
+  Restaurant,
   // User,
-  // Link,
   // Subscription,
   // Vote,
 };
@@ -27,7 +27,7 @@ const prisma = new PrismaClient();
 
 const server = new ApolloServer({
   typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
-  resolvers,
+  resolvers: resolvers as any,
   context: ({ req }) => {
     return {
       ...req,
