@@ -5,7 +5,6 @@ generates:
   src/generated/graphql.ts:
     config:
       defaultMapper: any
-      contextType: ./#Context
     plugins:
       - "typescript"
       - "typescript-resolvers"
