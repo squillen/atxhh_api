@@ -2,7 +2,7 @@ import { ApolloServer, PubSub } from "apollo-server";
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import path from "path";
-import { getUserId } from "./utils";
+import { getUserID } from "./utils";
 
 const pubsub = new PubSub();
 
@@ -10,17 +10,17 @@ const pubsub = new PubSub();
 import Query from "./resolvers/Query";
 import Mutation from "./resolvers/Mutation";
 import Restaurant from "./resolvers/Restaurant";
-// import User from "./resolvers/User";
-// import Subscription from "./resolvers/Subscription";
-// import Vote from "./resolvers/Vote";
+import User from "./resolvers/User";
+import Subscription from "./resolvers/Subscription";
+import Vote from "./resolvers/Vote";
 
 const resolvers = {
   Query,
   Mutation,
   Restaurant,
-  // User,
-  // Subscription,
-  // Vote,
+  User,
+  Subscription,
+  Vote,
 };
 
 const prisma = new PrismaClient();
@@ -33,7 +33,7 @@ const server = new ApolloServer({
       ...req,
       prisma,
       pubsub,
-      userId: req?.headers?.authorization ? getUserId(req, null) : null,
+      userID: req?.headers?.authorization ? getUserID(req, null) : null,
     };
   },
 });

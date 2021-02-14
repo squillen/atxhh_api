@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { APP_SECRET, getUserId } = require("../utils");
+const { APP_SECRET, getUserID } = require("../utils");
 import { MutationResolvers } from "../../generated/graphql";
 
 const Mutation: MutationResolvers = {
@@ -16,7 +16,7 @@ const Mutation: MutationResolvers = {
     const user = await context.prisma.user.create({
       data: { ...args, password },
     });
-    const token = jwt.sign({ userId: user.id }, APP_SECRET);
+    const token = jwt.sign({ userID: user.id }, APP_SECRET);
 
     return {
       token,
@@ -43,7 +43,7 @@ const Mutation: MutationResolvers = {
       throw new Error("Invalid password");
     }
 
-    const token = jwt.sign({ userId: user.id }, APP_SECRET);
+    const token = jwt.sign({ userID: user.id }, APP_SECRET);
 
     return {
       token,
@@ -51,25 +51,33 @@ const Mutation: MutationResolvers = {
     };
   },
   /**
-   * @function create - user can create new link
+   * @function create - user can create new restaurant
    * @param {object} _parent
    * @param {object} args
    * @param {object} context
-   * @returns {object} newly created link (Link)
+   * @returns {object} newly created restaurant (Restaurant)
    */
   create: async (_parent, args, context) => {
-    const { userId } = context;
+    const { userID } = context;
 
-    const newRestaurant = await context.prisma.link.create({
+    const newRestaurant = await context.prisma.restaurant.create({
       data: {
         url: args.url,
         description: args.description,
+        name: args.name,
+        happyHourDays: args.happyHourDays,
+        startTime: args.startTime,
+        endTime: args.endTime,
+        percentOffDrinks: args.percentOffDrinks,
+        percentOffFood: args.percentOffFood,
+        coordinates: args.coordinates,
+        address: args.address,
         createdAt: new Date(),
-        postedBy: { connect: { id: userId } },
+        createdBy: { connect: { id: userID } },
       },
     });
 
-    context.pubsub.publish("NEW_LINK", newRestaurant);
+    context.pubsub.publish("NEW_RESTAURANT", newRestaurant);
     return newRestaurant;
   },
   /**
@@ -80,25 +88,25 @@ const Mutation: MutationResolvers = {
    * @returns {object} newly created vote (id / User / Restaurant)
    */
   vote: async (_parent, args, context) => {
-    const userId = getUserId(context);
+    const userID = getUserID(context);
 
-    const userAlreadyVotedOnLink = await context.prisma.vote.findUnique({
+    const userAlreadyVotedOnRestaurant = await context.prisma.vote.findUnique({
       where: {
-        linkId_userId: {
-          userId,
-          linkId: Number(args.restaurantID),
+        restaurantID_userID: {
+          userID,
+          restaurantID: Number(args.restaurantID),
         },
       },
     });
 
-    if (Boolean(userAlreadyVotedOnLink)) {
-      throw new Error(`Already voted for link: ${args.restaurantID}`);
+    if (Boolean(userAlreadyVotedOnRestaurant)) {
+      throw new Error(`Already voted for restaurant: ${args.restaurantID}`);
     }
 
     const newVote = context.prisma.vote.create({
       data: {
-        user: { connect: { id: userId } },
-        link: { connect: { id: Number(args.restaurantID) } },
+        user: { connect: { id: userID } },
+        restaurant: { connect: { id: Number(args.restaurantID) } },
       },
     });
 

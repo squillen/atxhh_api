@@ -6,7 +6,7 @@ function getTokenPayload(token: String) {
   return jwt.verify(token, APP_SECRET);
 }
 
-export function getUserId(req: IncomingMessage, authToken: String | null) {
+export function getUserID(req: IncomingMessage, authToken: String | null) {
   if (req) {
     const authHeader = req.headers.authorization;
     if (authHeader) {
@@ -14,12 +14,12 @@ export function getUserId(req: IncomingMessage, authToken: String | null) {
       if (!token) {
         throw new Error('No token found');
       }
-      const { userId } = getTokenPayload(token);
-      return userId;
+      const { userID } = getTokenPayload(token);
+      return userID;
     }
   } else if (authToken) {
-    const { userId } = getTokenPayload(authToken);
-    return userId;
+    const { userID} = getTokenPayload(authToken);
+    return userID;
   }
 
   throw new Error('Not authenticated');

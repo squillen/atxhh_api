@@ -12,13 +12,13 @@ type Mutation {
   create(
     name: String!
     url: String!
-    description: [String!]!
+    description: String!
     happyHourDays: String!
     startTime: String!
     endTime: String!
     percentOffDrinks: Int
     percentOffFood: Int
-    coordinates: [Int!]!
+    coordinates: [String!]!
     address: String!
   ): Restaurant!
 
@@ -29,19 +29,19 @@ type Mutation {
 
 type Restaurant {
   id: ID!
+  createdAt: String!
   name: String!
   url: String!
-  description: [String!]!
+  description: String!
   happyHourDays: String!
   startTime: String!
   endTime: String!
   percentOffDrinks: Int
   percentOffFood: Int
   coordinates: Coordinates!
-  address: String!
-  createdAt: String!
-  postedBy: User
   votes: [Vote!]!
+  address: String!
+  createdBy: User
 }
 
 type Restaurants {
@@ -74,8 +74,8 @@ type Vote {
 }
 
 type Coordinates {
-  lat: Int
-  lng: Int
+  lat: String
+  lng: String
 }
 
 input RestaurantOrderByInput {

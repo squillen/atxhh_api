@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { Context } from './';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -45,13 +46,13 @@ export type Mutation = {
 export type MutationCreateArgs = {
   name: Scalars['String'];
   url: Scalars['String'];
-  description: Array<Scalars['String']>;
+  description: Scalars['String'];
   happyHourDays: Scalars['String'];
   startTime: Scalars['String'];
   endTime: Scalars['String'];
   percentOffDrinks?: Maybe<Scalars['Int']>;
   percentOffFood?: Maybe<Scalars['Int']>;
-  coordinates: Array<Scalars['Int']>;
+  coordinates: Array<Scalars['String']>;
   address: Scalars['String'];
 };
 
@@ -76,19 +77,19 @@ export type MutationVoteArgs = {
 export type Restaurant = {
   __typename?: 'Restaurant';
   id: Scalars['ID'];
+  createdAt: Scalars['String'];
   name: Scalars['String'];
   url: Scalars['String'];
-  description: Array<Scalars['String']>;
+  description: Scalars['String'];
   happyHourDays: Scalars['String'];
   startTime: Scalars['String'];
   endTime: Scalars['String'];
   percentOffDrinks?: Maybe<Scalars['Int']>;
   percentOffFood?: Maybe<Scalars['Int']>;
   coordinates: Coordinates;
-  address: Scalars['String'];
-  createdAt: Scalars['String'];
-  postedBy?: Maybe<User>;
   votes: Array<Vote>;
+  address: Scalars['String'];
+  createdBy?: Maybe<User>;
 };
 
 export type Restaurants = {
@@ -127,8 +128,8 @@ export type Vote = {
 
 export type Coordinates = {
   __typename?: 'Coordinates';
-  lat?: Maybe<Scalars['Int']>;
-  lng?: Maybe<Scalars['Int']>;
+  lat?: Maybe<Scalars['String']>;
+  lng?: Maybe<Scalars['String']>;
 };
 
 export type RestaurantOrderByInput = {
@@ -138,8 +139,8 @@ export type RestaurantOrderByInput = {
 };
 
 export enum Sort {
-  Asc = 'asc',
-  Desc = 'desc'
+  Asc = 'ASC',
+  Desc = 'DESC'
 }
 
 export enum Roles {
@@ -226,84 +227,84 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
-  String: ResolverTypeWrapper<Scalars['String']>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
+  String: ResolverTypeWrapper<any>;
+  Int: ResolverTypeWrapper<any>;
+  ID: ResolverTypeWrapper<any>;
   Mutation: ResolverTypeWrapper<{}>;
-  Restaurant: ResolverTypeWrapper<Restaurant>;
-  Restaurants: ResolverTypeWrapper<Restaurants>;
-  AuthPayload: ResolverTypeWrapper<AuthPayload>;
-  User: ResolverTypeWrapper<User>;
+  Restaurant: ResolverTypeWrapper<any>;
+  Restaurants: ResolverTypeWrapper<any>;
+  AuthPayload: ResolverTypeWrapper<any>;
+  User: ResolverTypeWrapper<any>;
   Subscription: ResolverTypeWrapper<{}>;
-  Vote: ResolverTypeWrapper<Vote>;
-  Coordinates: ResolverTypeWrapper<Coordinates>;
-  RestaurantOrderByInput: RestaurantOrderByInput;
-  Sort: Sort;
-  Roles: Roles;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Vote: ResolverTypeWrapper<any>;
+  Coordinates: ResolverTypeWrapper<any>;
+  RestaurantOrderByInput: ResolverTypeWrapper<any>;
+  Sort: ResolverTypeWrapper<any>;
+  Roles: ResolverTypeWrapper<any>;
+  Boolean: ResolverTypeWrapper<any>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Query: {};
-  String: Scalars['String'];
-  Int: Scalars['Int'];
-  ID: Scalars['ID'];
+  String: any;
+  Int: any;
+  ID: any;
   Mutation: {};
-  Restaurant: Restaurant;
-  Restaurants: Restaurants;
-  AuthPayload: AuthPayload;
-  User: User;
+  Restaurant: any;
+  Restaurants: any;
+  AuthPayload: any;
+  User: any;
   Subscription: {};
-  Vote: Vote;
-  Coordinates: Coordinates;
-  RestaurantOrderByInput: RestaurantOrderByInput;
-  Boolean: Scalars['Boolean'];
+  Vote: any;
+  Coordinates: any;
+  RestaurantOrderByInput: any;
+  Boolean: any;
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   restaurants?: Resolver<ResolversTypes['Restaurants'], ParentType, ContextType, RequireFields<QueryRestaurantsArgs, never>>;
   restaurant?: Resolver<Maybe<ResolversTypes['Restaurant']>, ParentType, ContextType, RequireFields<QueryRestaurantArgs, 'id'>>;
 };
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   create?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateArgs, 'name' | 'url' | 'description' | 'happyHourDays' | 'startTime' | 'endTime' | 'coordinates' | 'address'>>;
   signup?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'name'>>;
   login?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   vote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType, RequireFields<MutationVoteArgs, 'restaurantID'>>;
 };
 
-export type RestaurantResolvers<ContextType = any, ParentType extends ResolversParentTypes['Restaurant'] = ResolversParentTypes['Restaurant']> = {
+export type RestaurantResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Restaurant'] = ResolversParentTypes['Restaurant']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   happyHourDays?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   startTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   endTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   percentOffDrinks?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   percentOffFood?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   coordinates?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>;
-  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  postedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   votes?: Resolver<Array<ResolversTypes['Vote']>, ParentType, ContextType>;
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RestaurantsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Restaurants'] = ResolversParentTypes['Restaurants']> = {
+export type RestaurantsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Restaurants'] = ResolversParentTypes['Restaurants']> = {
   restaurants?: Resolver<Array<ResolversTypes['Restaurant']>, ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AuthPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
+export type AuthPayloadResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
   token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -312,25 +313,25 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+export type SubscriptionResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
   newRestaurant?: SubscriptionResolver<Maybe<ResolversTypes['Restaurant']>, "newRestaurant", ParentType, ContextType>;
   newVote?: SubscriptionResolver<Maybe<ResolversTypes['Vote']>, "newVote", ParentType, ContextType>;
 };
 
-export type VoteResolvers<ContextType = any, ParentType extends ResolversParentTypes['Vote'] = ResolversParentTypes['Vote']> = {
+export type VoteResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Vote'] = ResolversParentTypes['Vote']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   restaurant?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CoordinatesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']> = {
-  lat?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  lng?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+export type CoordinatesResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']> = {
+  lat?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lng?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = Context> = {
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Restaurant?: RestaurantResolvers<ContextType>;
@@ -347,4 +348,4 @@ export type Resolvers<ContextType = any> = {
  * @deprecated
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
-export type IResolvers<ContextType = any> = Resolvers<ContextType>;
+export type IResolvers<ContextType = Context> = Resolvers<ContextType>;
