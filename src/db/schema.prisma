@@ -14,7 +14,7 @@ generator client {
 model Restaurant {
   id               Int      @id @default(autoincrement())
   createdAt        DateTime @default(now())
-  name             String @unique
+  name             String   @unique
   url              String
   description      String
   happyHourDays    String
