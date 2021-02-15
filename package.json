@@ -12,7 +12,7 @@
   "scripts": {
     "lint": "eslint \"src/**/*.ts\" --ignore-pattern node_modules/",
     "test": "jest",
-    "prebuild": "rm -rf build/*",
+    "prebuild": "rm -rf build/* && graphql-codegen --config codegen.yml",
     "generate": "graphql-codegen --config codegen.yml",
     "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/server/index.ts",
     "debug": "dotenv -- nodemon -e ts,graphql -x ts-node --inspect src/server/index.ts",
