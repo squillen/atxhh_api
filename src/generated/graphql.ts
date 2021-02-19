@@ -58,6 +58,8 @@ export type MutationCreateArgs = {
   happyHourDays: Scalars['String'];
   startTime: Scalars['String'];
   endTime: Scalars['String'];
+  cuisine: Cuisine;
+  price: Scalars['Int'];
   goFor: Array<Scalars['String']>;
   when: Scalars['String'];
   menu?: Maybe<Scalars['String']>;
@@ -100,7 +102,9 @@ export type Restaurant = {
   __typename?: 'Restaurant';
   id: Scalars['ID'];
   createdAt: Scalars['String'];
+  cuisine: Cuisine;
   name: Scalars['String'];
+  price: Scalars['Int'];
   url: Scalars['String'];
   image: Scalars['String'];
   menu?: Maybe<Scalars['String']>;
@@ -183,6 +187,15 @@ export enum Sort {
 export enum Role {
   User = 'USER',
   Admin = 'ADMIN'
+}
+
+export enum Cuisine {
+  Japanese = 'JAPANESE',
+  American = 'AMERICAN',
+  Chinese = 'CHINESE',
+  Indian = 'INDIAN',
+  Mexican = 'MEXICAN',
+  Italian = 'ITALIAN'
 }
 
 
@@ -281,6 +294,7 @@ export type ResolversTypes = {
   RestaurantOrderByInput: ResolverTypeWrapper<any>;
   Sort: ResolverTypeWrapper<any>;
   Role: ResolverTypeWrapper<any>;
+  Cuisine: ResolverTypeWrapper<any>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -310,7 +324,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  create?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateArgs, 'name' | 'image' | 'url' | 'description' | 'happyHourDays' | 'startTime' | 'endTime' | 'goFor' | 'when' | 'coordinates' | 'address'>>;
+  create?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateArgs, 'name' | 'image' | 'url' | 'description' | 'happyHourDays' | 'startTime' | 'endTime' | 'cuisine' | 'price' | 'goFor' | 'when' | 'coordinates' | 'address'>>;
   signup?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'name'>>;
   login?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   deleteRestaurant?: Resolver<Maybe<ResolversTypes['DeletePayload']>, ParentType, ContextType, RequireFields<MutationDeleteRestaurantArgs, 'id'>>;
@@ -321,7 +335,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type RestaurantResolvers<ContextType = any, ParentType extends ResolversParentTypes['Restaurant'] = ResolversParentTypes['Restaurant']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  cuisine?: Resolver<ResolversTypes['Cuisine'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   menu?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

@@ -18,6 +18,8 @@ type Mutation {
     happyHourDays: String!
     startTime: String!
     endTime: String!
+    cuisine: Cuisine!
+    price: Int!
     goFor: [String!]!
     when: String!
     menu: String
@@ -36,7 +38,9 @@ type Mutation {
 type Restaurant {
   id: ID!
   createdAt: String!
+  cuisine: Cuisine!
   name: String!
+  price: Int!
   url: String!
   image: String!
   menu: String
@@ -112,4 +116,13 @@ enum Sort {
 enum Role {
   USER
   ADMIN
+}
+
+enum Cuisine {
+	JAPANESE
+	AMERICAN
+	CHINESE
+	INDIAN
+	MEXICAN
+	ITALIAN
 }

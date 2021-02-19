@@ -60,7 +60,7 @@ const Mutation: MutationResolvers = {
 	 */
 	create: async (_parent, args, context) => {
 		const { userID } = context;
-
+    console.log('userID', userID)
 		const newRestaurant = await context.prisma.restaurant.create({
 			data: {
 				url: args.url,
@@ -70,6 +70,8 @@ const Mutation: MutationResolvers = {
 				startTime: args.startTime,
 				endTime: args.endTime,
         goFor: args.goFor,
+        cuisine: args.cuisine,
+        price: args.price,
         when: args.when,
         menu: args.menu,
 				percentOffDrinks: args.percentOffDrinks,
