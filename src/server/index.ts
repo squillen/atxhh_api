@@ -2,7 +2,7 @@ import { ApolloServer, PubSub } from "apollo-server";
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import path from "path";
-import { getUserID } from "./utils";
+import { getUserID, getUserRole } from './utils';
 
 const pubsub = new PubSub();
 
@@ -28,7 +28,6 @@ const prisma = new PrismaClient();
 const server = new ApolloServer({
   typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
   resolvers: resolvers as any,
-  playground: true,
   introspection: true,
   context: ({ req }) => {
     return {
@@ -36,6 +35,7 @@ const server = new ApolloServer({
       prisma,
       pubsub,
       userID: req?.headers?.authorization ? getUserID(req, null) : null,
+      userRole: getUserRole(req),
     };
   },
 });
