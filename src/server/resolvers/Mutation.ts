@@ -69,6 +69,9 @@ const Mutation: MutationResolvers = {
 				happyHourDays: args.happyHourDays,
 				startTime: args.startTime,
 				endTime: args.endTime,
+        goFor: args.goFor,
+        when: args.when,
+        menu: args.menu,
 				percentOffDrinks: args.percentOffDrinks,
 				percentOffFood: args.percentOffFood,
 				coordinates: args.coordinates,
@@ -91,10 +94,13 @@ const Mutation: MutationResolvers = {
 	deleteRestaurant: async (_parent, args, context) => {
 		const { userRole } = context;
 		let success = false;
+    console.log('userRole', userRole)
+    console.log('args.id :::', args.id)
+
 		if (userRole === ADMIN) {
 			try {
 				await context.prisma.restaurant.delete({
-					where: { id: args.id },
+					where: { id: +args.id },
 				});
 				success = true;
 			} catch (e) {
@@ -116,7 +122,7 @@ const Mutation: MutationResolvers = {
 		if (userRole === ADMIN || userID === args.id) {
 			try {
 				await context.prisma.user.delete({
-					where: { id: args.id },
+					where: { id: +args.id },
 				});
 				success = true;
 			} catch (e) {

@@ -58,6 +58,9 @@ export type MutationCreateArgs = {
   happyHourDays: Scalars['String'];
   startTime: Scalars['String'];
   endTime: Scalars['String'];
+  goFor: Array<Scalars['String']>;
+  when: Scalars['String'];
+  menu?: Maybe<Scalars['String']>;
   percentOffDrinks?: Maybe<Scalars['Int']>;
   percentOffFood?: Maybe<Scalars['Int']>;
   coordinates: CoordinatesInput;
@@ -100,6 +103,9 @@ export type Restaurant = {
   name: Scalars['String'];
   url: Scalars['String'];
   image: Scalars['String'];
+  menu?: Maybe<Scalars['String']>;
+  goFor: Array<Scalars['String']>;
+  when: Scalars['String'];
   description: Scalars['String'];
   happyHourDays: Scalars['String'];
   startTime: Scalars['String'];
@@ -304,7 +310,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  create?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateArgs, 'name' | 'image' | 'url' | 'description' | 'happyHourDays' | 'startTime' | 'endTime' | 'coordinates' | 'address'>>;
+  create?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateArgs, 'name' | 'image' | 'url' | 'description' | 'happyHourDays' | 'startTime' | 'endTime' | 'goFor' | 'when' | 'coordinates' | 'address'>>;
   signup?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'name'>>;
   login?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   deleteRestaurant?: Resolver<Maybe<ResolversTypes['DeletePayload']>, ParentType, ContextType, RequireFields<MutationDeleteRestaurantArgs, 'id'>>;
@@ -318,6 +324,9 @@ export type RestaurantResolvers<ContextType = any, ParentType extends ResolversP
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  menu?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  goFor?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  when?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   happyHourDays?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   startTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

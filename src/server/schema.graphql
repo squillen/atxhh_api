@@ -18,6 +18,9 @@ type Mutation {
     happyHourDays: String!
     startTime: String!
     endTime: String!
+    goFor: [String!]!
+    when: String!
+    menu: String
     percentOffDrinks: Int
     percentOffFood: Int
     coordinates: CoordinatesInput!
@@ -36,6 +39,9 @@ type Restaurant {
   name: String!
   url: String!
   image: String!
+  menu: String
+  goFor: [String!]!
+  when: String!
   description: String!
   happyHourDays: String!
   startTime: String!
