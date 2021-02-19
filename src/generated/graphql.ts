@@ -44,6 +44,7 @@ export type Mutation = {
 
 export type MutationCreateArgs = {
   name: Scalars['String'];
+  image: Scalars['String'];
   url: Scalars['String'];
   description: Scalars['String'];
   happyHourDays: Scalars['String'];
@@ -79,6 +80,7 @@ export type Restaurant = {
   createdAt: Scalars['String'];
   name: Scalars['String'];
   url: Scalars['String'];
+  image: Scalars['String'];
   description: Scalars['String'];
   happyHourDays: Scalars['String'];
   startTime: Scalars['String'];
@@ -278,6 +280,7 @@ export type RestaurantResolvers<ContextType = any, ParentType extends ResolversP
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   happyHourDays?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   startTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

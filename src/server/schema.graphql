@@ -11,6 +11,7 @@ type Query {
 type Mutation {
   create(
     name: String!
+    image: String!
     url: String!
     description: String!
     happyHourDays: String!
@@ -32,6 +33,7 @@ type Restaurant {
   createdAt: String!
   name: String!
   url: String!
+  image: String!
   description: String!
   happyHourDays: String!
   startTime: String!
