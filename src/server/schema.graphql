@@ -6,6 +6,7 @@ type Query {
     orderBy: RestaurantOrderByInput
   ): Restaurants!
   restaurant(id: ID!): Restaurant
+  currentUser(id: ID!): User
 }
 
 type Mutation {
@@ -19,12 +20,13 @@ type Mutation {
     endTime: String!
     percentOffDrinks: Int
     percentOffFood: Int
-    coordinates: [String!]!
+    coordinates: CoordinatesInput!
     address: String!
   ): Restaurant!
-
-  signup(email: String!, password: String!, name: String!): AuthPayload
+  signup(role: Role, email: String!, password: String!, name: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload
+  deleteRestaurant(id: ID!): DeletePayload
+  deleteUser(id: ID!): DeletePayload
   vote(restaurantID: ID!): Vote
 }
 
@@ -56,11 +58,15 @@ type AuthPayload {
   user: User
 }
 
+type DeletePayload {
+  success: Boolean!
+}
+
 type User {
   id: ID!
   name: String!
   email: String!
-  Role: Roles
+  role: Role
   restaurants: [Restaurant!]!
 }
 
@@ -75,13 +81,19 @@ type Vote {
   user: User!
 }
 
+input CoordinatesInput {
+  lat: String!
+  lng: String!
+}
+
 type Coordinates {
-  lat: String
-  lng: String
+  lat: String!
+  lng: String!
 }
 
 input RestaurantOrderByInput {
   description: Sort
+  name: Sort
   url: Sort
   createdAt: Sort
 }
@@ -91,7 +103,7 @@ enum Sort {
   DESC
 }
 
-enum Roles {
+enum Role {
   USER
   ADMIN
 }

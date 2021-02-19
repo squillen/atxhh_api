@@ -18,6 +18,7 @@ export type Query = {
   __typename?: 'Query';
   restaurants: Restaurants;
   restaurant?: Maybe<Restaurant>;
+  currentUser?: Maybe<User>;
 };
 
 
@@ -33,11 +34,18 @@ export type QueryRestaurantArgs = {
   id: Scalars['ID'];
 };
 
+
+export type QueryCurrentUserArgs = {
+  id: Scalars['ID'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   create: Restaurant;
   signup?: Maybe<AuthPayload>;
   login?: Maybe<AuthPayload>;
+  deleteRestaurant?: Maybe<DeletePayload>;
+  deleteUser?: Maybe<DeletePayload>;
   vote?: Maybe<Vote>;
 };
 
@@ -52,12 +60,13 @@ export type MutationCreateArgs = {
   endTime: Scalars['String'];
   percentOffDrinks?: Maybe<Scalars['Int']>;
   percentOffFood?: Maybe<Scalars['Int']>;
-  coordinates: Array<Scalars['String']>;
+  coordinates: CoordinatesInput;
   address: Scalars['String'];
 };
 
 
 export type MutationSignupArgs = {
+  role?: Maybe<Role>;
   email: Scalars['String'];
   password: Scalars['String'];
   name: Scalars['String'];
@@ -67,6 +76,16 @@ export type MutationSignupArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationDeleteRestaurantArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUserArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -105,12 +124,17 @@ export type AuthPayload = {
   user?: Maybe<User>;
 };
 
+export type DeletePayload = {
+  __typename?: 'DeletePayload';
+  success: Scalars['Boolean'];
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
   name: Scalars['String'];
   email: Scalars['String'];
-  Role?: Maybe<Roles>;
+  role?: Maybe<Role>;
   restaurants: Array<Restaurant>;
 };
 
@@ -127,14 +151,20 @@ export type Vote = {
   user: User;
 };
 
+export type CoordinatesInput = {
+  lat: Scalars['String'];
+  lng: Scalars['String'];
+};
+
 export type Coordinates = {
   __typename?: 'Coordinates';
-  lat?: Maybe<Scalars['String']>;
-  lng?: Maybe<Scalars['String']>;
+  lat: Scalars['String'];
+  lng: Scalars['String'];
 };
 
 export type RestaurantOrderByInput = {
   description?: Maybe<Sort>;
+  name?: Maybe<Sort>;
   url?: Maybe<Sort>;
   createdAt?: Maybe<Sort>;
 };
@@ -144,7 +174,7 @@ export enum Sort {
   Desc = 'DESC'
 }
 
-export enum Roles {
+export enum Role {
   User = 'USER',
   Admin = 'ADMIN'
 }
@@ -235,14 +265,16 @@ export type ResolversTypes = {
   Restaurant: ResolverTypeWrapper<any>;
   Restaurants: ResolverTypeWrapper<any>;
   AuthPayload: ResolverTypeWrapper<any>;
+  DeletePayload: ResolverTypeWrapper<any>;
+  Boolean: ResolverTypeWrapper<any>;
   User: ResolverTypeWrapper<any>;
   Subscription: ResolverTypeWrapper<{}>;
   Vote: ResolverTypeWrapper<any>;
+  CoordinatesInput: ResolverTypeWrapper<any>;
   Coordinates: ResolverTypeWrapper<any>;
   RestaurantOrderByInput: ResolverTypeWrapper<any>;
   Sort: ResolverTypeWrapper<any>;
-  Roles: ResolverTypeWrapper<any>;
-  Boolean: ResolverTypeWrapper<any>;
+  Role: ResolverTypeWrapper<any>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -255,23 +287,28 @@ export type ResolversParentTypes = {
   Restaurant: any;
   Restaurants: any;
   AuthPayload: any;
+  DeletePayload: any;
+  Boolean: any;
   User: any;
   Subscription: {};
   Vote: any;
+  CoordinatesInput: any;
   Coordinates: any;
   RestaurantOrderByInput: any;
-  Boolean: any;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   restaurants?: Resolver<ResolversTypes['Restaurants'], ParentType, ContextType, RequireFields<QueryRestaurantsArgs, never>>;
   restaurant?: Resolver<Maybe<ResolversTypes['Restaurant']>, ParentType, ContextType, RequireFields<QueryRestaurantArgs, 'id'>>;
+  currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryCurrentUserArgs, 'id'>>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  create?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateArgs, 'name' | 'url' | 'description' | 'happyHourDays' | 'startTime' | 'endTime' | 'coordinates' | 'address'>>;
+  create?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateArgs, 'name' | 'image' | 'url' | 'description' | 'happyHourDays' | 'startTime' | 'endTime' | 'coordinates' | 'address'>>;
   signup?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'name'>>;
   login?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+  deleteRestaurant?: Resolver<Maybe<ResolversTypes['DeletePayload']>, ParentType, ContextType, RequireFields<MutationDeleteRestaurantArgs, 'id'>>;
+  deleteUser?: Resolver<Maybe<ResolversTypes['DeletePayload']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'id'>>;
   vote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType, RequireFields<MutationVoteArgs, 'restaurantID'>>;
 };
 
@@ -306,11 +343,16 @@ export type AuthPayloadResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DeletePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeletePayload'] = ResolversParentTypes['DeletePayload']> = {
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  Role?: Resolver<Maybe<ResolversTypes['Roles']>, ParentType, ContextType>;
+  role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;
   restaurants?: Resolver<Array<ResolversTypes['Restaurant']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -328,8 +370,8 @@ export type VoteResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type CoordinatesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']> = {
-  lat?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lng?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lat?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lng?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -339,6 +381,7 @@ export type Resolvers<ContextType = any> = {
   Restaurant?: RestaurantResolvers<ContextType>;
   Restaurants?: RestaurantsResolvers<ContextType>;
   AuthPayload?: AuthPayloadResolvers<ContextType>;
+  DeletePayload?: DeletePayloadResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   Vote?: VoteResolvers<ContextType>;

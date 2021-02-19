@@ -23,7 +23,7 @@ model Restaurant {
   endTime          String
   percentOffDrinks Int
   percentOffFood   Int
-  coordinates      String[]
+  coordinates      Json?
   address          String
   votes            Vote[]
   createdBy        User?    @relation(fields: [createdByID], references: [id])
@@ -34,6 +34,7 @@ model User {
   id          Int          @id @default(autoincrement())
   name        String
   email       String       @unique
+  role        Role         @default(USER)
   password    String
   restaurants Restaurant[]
   votes       Vote[]
@@ -47,4 +48,9 @@ model Vote {
   userID        Int
 
   @@unique([restaurauntID, userID])
+}
+
+enum Role {
+  USER
+  ADMIN
 }
