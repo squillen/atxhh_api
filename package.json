@@ -5,7 +5,7 @@
     "node": "12.18.3"
   },
   "prisma": {
-    "schema": "src/db/schema.prisma"
+    "schema": "src/db/prisma/schema.prisma"
   },
   "description": "The API used for ATX HH",
   "main": "build/server/index.js",
@@ -17,7 +17,8 @@
     "build": "tsc && npm run copy-schemas",
     "copy-schemas": "$(npm bin)/cpx src/**/*.graphql build/server",
     "start": "tsc && npm run copy-schemas && node ./build/server/index.js",
-    "dev": "dotenv -- nodemon -e ts,graphql -x ts-node src/server/index.ts",
+    "dev": "tsc --watch",
+    "server": "npm run copy-schemas && nodemon ./build/server/index.js",
     "debug": "dotenv -- nodemon -e ts,graphql -x ts-node --inspect src/server/index.ts",
     "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },

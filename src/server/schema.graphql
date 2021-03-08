@@ -1,121 +1,198 @@
+##### TYPES #####
 type Query {
-  restaurants(
-    filter: String
-    skip: Int
-    take: Int
-    orderBy: RestaurantOrderByInput
-  ): Restaurants!
-  restaurant(id: ID!): Restaurant
-  currentUser(id: ID!): User
+	restaurants(
+		whatToGoFor: [GoFor!]
+		cuisines: [Cuisine!]
+		prices: [String!]
+		happyHourDays: [String!]
+		rating: Rating
+		skip: Int
+		take: Int
+		orderBy: RestaurantOrderByInput
+	): Restaurants
+	restaurant(id: ID!): Restaurant
+	currentUser(id: ID!): User
 }
 
 type Mutation {
-  create(
-    name: String!
-    image: String!
-    url: String!
-    description: String!
-    happyHourDays: String!
-    startTime: String!
-    endTime: String!
-    cuisine: Cuisine!
-    price: Int!
-    goFor: [String!]!
-    when: String!
-    menu: String
-    percentOffDrinks: Int
-    percentOffFood: Int
-    coordinates: CoordinatesInput!
-    address: String!
-  ): Restaurant!
-  signup(role: Role, email: String!, password: String!, name: String!): AuthPayload
-  login(email: String!, password: String!): AuthPayload
-  deleteRestaurant(id: ID!): DeletePayload
-  deleteUser(id: ID!): DeletePayload
-  vote(restaurantID: ID!): Vote
+	create(
+		name: String!
+		image: String!
+		url: String!
+		rating: Rating!
+		description: String!
+		happyHourDays: [String!]!
+		startTime: String!
+		endTime: String!
+		cuisine: [Cuisine!]!
+		price: String!
+		whatToGoFor: [GoFor!]!
+		when: String!
+		menu: String
+		percentOffDrinks: Int
+		percentOffFood: Int
+		coordinates: CoordinatesInput!
+		address: String!
+		active: Boolean!
+	): Restaurant!
+	signup(
+		role: Role
+		email: String!
+		password: String!
+		name: String!
+	): AuthPayload
+	updateRestaurant(id: ID!, data: UpdateData): UpdatePayload
+	login(email: String!, password: String!): AuthPayload
+	deleteRestaurant(id: ID!): DeletePayload
+	deleteUser(id: ID!): DeletePayload
+	vote(restaurantID: ID!): Vote
 }
 
 type Restaurant {
-  id: ID!
-  createdAt: String!
-  cuisine: Cuisine!
-  name: String!
-  price: Int!
-  url: String!
-  image: String!
-  menu: String
-  goFor: [String!]!
-  when: String!
-  description: String!
-  happyHourDays: String!
-  startTime: String!
-  endTime: String!
-  percentOffDrinks: Int
-  percentOffFood: Int
-  coordinates: Coordinates!
-  votes: [Vote!]!
-  address: String!
-  createdBy: User
+	id: ID!
+	createdAt: String!
+	cuisine: [Cuisine!]!
+	name: String!
+	rating: Rating!
+	warnings: [Warning!]
+	price: String!
+	url: String!
+	image: String!
+	menu: String
+	whatToGoFor: [GoFor!]!
+	when: String!
+	description: String!
+	happyHourDays: [String!]!
+	startTime: String!
+	endTime: String!
+	percentOffDrinks: Int
+	percentOffFood: Int
+	coordinates: Coordinates!
+	votes: [Vote!]!
+	address: String!
+	active: Boolean
+	createdBy: User
 }
 
 type Restaurants {
-  restaurants: [Restaurant!]!
-  count: Int!
+	results: [Restaurant!]
+	count: Int!
 }
 
 type AuthPayload {
-  token: String
-  user: User
+	token: String
+	user: User
 }
 
 type DeletePayload {
-  success: Boolean!
+	success: Boolean!
+}
+
+type UpdatePayload {
+	success: Boolean!
+	restaurant: Restaurant
 }
 
 type User {
-  id: ID!
-  name: String!
-  email: String!
-  role: Role
-  restaurants: [Restaurant!]!
+	id: ID!
+	name: String!
+	email: String!
+	role: Role
+	restaurants: [Restaurant!]!
 }
 
 type Subscription {
-  newRestaurant: Restaurant
-  newVote: Vote
+	newRestaurant: Restaurant
+	newVote: Vote
 }
 
 type Vote {
-  id: ID!
-  restaurant: Restaurant!
-  user: User!
-}
-
-input CoordinatesInput {
-  lat: String!
-  lng: String!
+	id: ID!
+	restaurant: Restaurant!
+	user: User!
 }
 
 type Coordinates {
-  lat: String!
-  lng: String!
+	lat: String!
+	lng: String!
+}
+
+type Warning {
+	id: ID
+	userID: ID
+	restaurantID: ID
+	issues: [String!]
+}
+
+##### INPUTS #####
+input CoordinatesInput {
+	lat: String!
+	lng: String!
+}
+
+input WarningInput {
+	userID: ID!
+	restaurantID: ID!
+	issues: [String!]!
+}
+
+input UpdateData {
+	cuisine: [Cuisine!]
+	name: String
+	rating: Rating
+	price: String
+	url: String
+	image: String
+	menu: String
+	whatToGoFor: [GoFor!]
+	when: String
+	description: String
+	happyHourDays: [String!]
+	startTime: String
+	endTime: String
+	percentOffDrinks: Int
+	percentOffFood: Int
+	coordinates: CoordinatesInput
+	address: String
+	warnings: [WarningInput!]
+	active: Boolean
 }
 
 input RestaurantOrderByInput {
-  description: Sort
-  name: Sort
-  url: Sort
-  createdAt: Sort
+	description: Sort
+	name: Sort
+	url: Sort
+	createdAt: Sort
+}
+
+##### ENUMS #####
+enum GoFor {
+	DRINKS
+	FOOD
 }
 
 enum Sort {
-  ASC
-  DESC
+	ASC
+	DESC
 }
 
 enum Role {
-  USER
-  ADMIN
+	USER
+	ADMIN
+}
+
+enum Rating {
+	ONE
+	TWO
+	THREE
+	FOUR
+	FIVE
+	SIX
+	SEVEN
+	EIGHT
+	NINE
+	TEN
+	NA
 }
 
 enum Cuisine {
@@ -125,4 +202,8 @@ enum Cuisine {
 	INDIAN
 	MEXICAN
 	ITALIAN
+	STEAK_HOUSE
+	ASIAN
+	SOUTHERN
+	SEAFOOD
 }

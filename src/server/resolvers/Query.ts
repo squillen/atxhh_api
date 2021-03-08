@@ -9,23 +9,30 @@ const Query: QueryResolvers = {
 	 * @returns {object} restaurants, count
 	 */
 	restaurants: async (_parent, args, context) => {
-		const filter = args.filter;
-		const where = filter
-			? {
-					OR: [
-						{ description: { contains: filter } },
-						{ url: { contains: filter } },
-					],
-			  }
-			: {};
-		const restaurants = context.prisma.restaurant.findMany({
-			where,
-			skip: args.skip,
-			take: args.take,
-			orderBy: args.orderBy,
-		});
-		const count = await context.prisma.restaurant.count({ where });
-		return { restaurants, count };
+		try {
+			const where = Object.keys(args).length
+				? {
+						AND: [
+							{ happyHourDays: { hasSome: args.happyHourDays } },
+							{ rating: { in: args.rating } },
+							{ whatToGoFor: { hasSome: args.whatToGoFor } },
+							{ cuisine: { hasSome: args.cuisines } },
+							{ price: { in: args.prices } },
+						],
+				  }
+				: {};
+			const results = await context.prisma.restaurant.findMany({
+				where,
+				skip: args.skip,
+				take: args.take,
+				orderBy: args.orderBy,
+			});
+			const count = results.length;
+			return { results, count };
+		} catch (e) {
+			console.error(e)
+			throw new Error(e);
+		}
 	},
 	/**
 	 * @function currentUser - get currentUser

@@ -17,7 +17,10 @@ const Mutation: MutationResolvers = {
 		const user = await context.prisma.user.create({
 			data: { ...args, password },
 		});
-		const token = jwt.sign({ userID: user.id, userRole: user.role }, APP_SECRET);
+		const token = jwt.sign(
+			{ userID: user.id, userRole: user.role },
+			APP_SECRET
+		);
 
 		return {
 			token,
@@ -60,7 +63,6 @@ const Mutation: MutationResolvers = {
 	 */
 	create: async (_parent, args, context) => {
 		const { userID } = context;
-    console.log('userID', userID)
 		const newRestaurant = await context.prisma.restaurant.create({
 			data: {
 				url: args.url,
@@ -69,11 +71,13 @@ const Mutation: MutationResolvers = {
 				happyHourDays: args.happyHourDays,
 				startTime: args.startTime,
 				endTime: args.endTime,
-        goFor: args.goFor,
-        cuisine: args.cuisine,
-        price: args.price,
-        when: args.when,
-        menu: args.menu,
+				whatToGoFor: args.whatToGoFor,
+				cuisine: args.cuisine,
+				price: args.price,
+				rating: args.rating,
+				image: args.image,
+				when: args.when,
+				menu: args.menu,
 				percentOffDrinks: args.percentOffDrinks,
 				percentOffFood: args.percentOffFood,
 				coordinates: args.coordinates,
@@ -96,8 +100,6 @@ const Mutation: MutationResolvers = {
 	deleteRestaurant: async (_parent, args, context) => {
 		const { userRole } = context;
 		let success = false;
-    console.log('userRole', userRole)
-    console.log('args.id :::', args.id)
 
 		if (userRole === ADMIN) {
 			try {
@@ -111,6 +113,32 @@ const Mutation: MutationResolvers = {
 		}
 		return { success };
 	},
+	/**
+	 * @function updateRestaurant - update restaurant
+	 * @param {object} _parent
+	 * @param {object} args
+	 * @param {object} context
+	 * @returns {boolean && Restaurant} update result and updated Restaurant
+	 */
+	updateRestaurant: async (_parent, args, context) => {
+		const { userRole } = context;
+		let success = false;
+		const { id, data } = args;
+		if (userRole === ADMIN) {
+			try {
+				const updatedRestaurant = await context.prisma.restaurant.update({
+					where: { id: +id },
+					data: { ...data },
+				});
+				console.log('updatedRestaurant', updatedRestaurant)
+				success = true;
+			} catch (e) {
+				console.error(e);
+			}
+		}
+		return { success };
+	},
+
 	/**
 	 * @function deleteUser - delete user
 	 * @param {object} _parent
