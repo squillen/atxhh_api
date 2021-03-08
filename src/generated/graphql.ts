@@ -134,7 +134,7 @@ export type Restaurant = {
   coordinates: Coordinates;
   votes: Array<Vote>;
   address: Scalars['String'];
-  active: Scalars['Boolean'];
+  active?: Maybe<Scalars['Boolean']>;
   createdBy?: Maybe<User>;
 };
 
@@ -446,7 +446,7 @@ export type RestaurantResolvers<ContextType = any, ParentType extends ResolversP
   coordinates?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>;
   votes?: Resolver<Array<ResolversTypes['Vote']>, ParentType, ContextType>;
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  active?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
