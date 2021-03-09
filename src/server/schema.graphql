@@ -118,8 +118,8 @@ type Coordinates {
 }
 
 type Warning {
-	WRONG_TIMES: Int!
-	NO_LONGER_ACTIVE: Int!
+	WRONG_TIMES: Int
+	NO_LONGER_ACTIVE: Int
 }
 
 ##### INPUTS #####
@@ -129,8 +129,8 @@ input CoordinatesInput {
 }
 
 input WarningInput {
-	WRONG_TIMES: Int!
-	NO_LONGER_ACTIVE: Int!
+	WRONG_TIMES: Int
+	NO_LONGER_ACTIVE: Int
 }
 
 input UpdateData {

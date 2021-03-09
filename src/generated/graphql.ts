@@ -191,8 +191,8 @@ export type Coordinates = {
 
 export type Warning = {
   __typename?: 'Warning';
-  WRONG_TIMES: Scalars['Int'];
-  NO_LONGER_ACTIVE: Scalars['Int'];
+  WRONG_TIMES?: Maybe<Scalars['Int']>;
+  NO_LONGER_ACTIVE?: Maybe<Scalars['Int']>;
 };
 
 export type CoordinatesInput = {
@@ -201,8 +201,8 @@ export type CoordinatesInput = {
 };
 
 export type WarningInput = {
-  WRONG_TIMES: Scalars['Int'];
-  NO_LONGER_ACTIVE: Scalars['Int'];
+  WRONG_TIMES?: Maybe<Scalars['Int']>;
+  NO_LONGER_ACTIVE?: Maybe<Scalars['Int']>;
 };
 
 export type UpdateData = {
@@ -505,8 +505,8 @@ export type CoordinatesResolvers<ContextType = any, ParentType extends Resolvers
 };
 
 export type WarningResolvers<ContextType = any, ParentType extends ResolversParentTypes['Warning'] = ResolversParentTypes['Warning']> = {
-  WRONG_TIMES?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  NO_LONGER_ACTIVE?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  WRONG_TIMES?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  NO_LONGER_ACTIVE?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

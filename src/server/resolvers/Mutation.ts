@@ -124,7 +124,7 @@ const Mutation: MutationResolvers = {
 		const { userRole } = context;
 		let success = false;
 		const { id, data } = args;
-		if (userRole === ADMIN) {
+		if (userRole === ADMIN || data?.warnings) {
 			try {
 				const updatedRestaurant = await context.prisma.restaurant.update({
 					where: { id: +id },
