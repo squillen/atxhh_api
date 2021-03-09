@@ -118,7 +118,7 @@ export type Restaurant = {
   cuisine: Array<Cuisine>;
   name: Scalars['String'];
   rating: Rating;
-  warnings?: Maybe<Array<Warning>>;
+  warnings?: Maybe<Warning>;
   price: Scalars['String'];
   url: Scalars['String'];
   image: Scalars['String'];
@@ -191,10 +191,8 @@ export type Coordinates = {
 
 export type Warning = {
   __typename?: 'Warning';
-  id?: Maybe<Scalars['ID']>;
-  userID?: Maybe<Scalars['ID']>;
-  restaurantID?: Maybe<Scalars['ID']>;
-  issues?: Maybe<Array<Scalars['String']>>;
+  WRONG_TIMES: Scalars['Int'];
+  NO_LONGER_ACTIVE: Scalars['Int'];
 };
 
 export type CoordinatesInput = {
@@ -203,9 +201,8 @@ export type CoordinatesInput = {
 };
 
 export type WarningInput = {
-  userID: Scalars['ID'];
-  restaurantID: Scalars['ID'];
-  issues: Array<Scalars['String']>;
+  WRONG_TIMES: Scalars['Int'];
+  NO_LONGER_ACTIVE: Scalars['Int'];
 };
 
 export type UpdateData = {
@@ -226,7 +223,7 @@ export type UpdateData = {
   percentOffFood?: Maybe<Scalars['Int']>;
   coordinates?: Maybe<CoordinatesInput>;
   address?: Maybe<Scalars['String']>;
-  warnings?: Maybe<Array<WarningInput>>;
+  warnings?: Maybe<WarningInput>;
   active?: Maybe<Scalars['Boolean']>;
 };
 
@@ -240,6 +237,11 @@ export type RestaurantOrderByInput = {
 export enum GoFor {
   Drinks = 'DRINKS',
   Food = 'FOOD'
+}
+
+export enum WarningEnum {
+  WrongTimes = 'WRONG_TIMES',
+  NoLongerActive = 'NO_LONGER_ACTIVE'
 }
 
 export enum Sort {
@@ -378,6 +380,7 @@ export type ResolversTypes = {
   UpdateData: ResolverTypeWrapper<any>;
   RestaurantOrderByInput: ResolverTypeWrapper<any>;
   GoFor: ResolverTypeWrapper<any>;
+  WarningEnum: ResolverTypeWrapper<any>;
   Sort: ResolverTypeWrapper<any>;
   Role: ResolverTypeWrapper<any>;
   Rating: ResolverTypeWrapper<any>;
@@ -430,7 +433,7 @@ export type RestaurantResolvers<ContextType = any, ParentType extends ResolversP
   cuisine?: Resolver<Array<ResolversTypes['Cuisine']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   rating?: Resolver<ResolversTypes['Rating'], ParentType, ContextType>;
-  warnings?: Resolver<Maybe<Array<ResolversTypes['Warning']>>, ParentType, ContextType>;
+  warnings?: Resolver<Maybe<ResolversTypes['Warning']>, ParentType, ContextType>;
   price?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -502,10 +505,8 @@ export type CoordinatesResolvers<ContextType = any, ParentType extends Resolvers
 };
 
 export type WarningResolvers<ContextType = any, ParentType extends ResolversParentTypes['Warning'] = ResolversParentTypes['Warning']> = {
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  userID?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  restaurantID?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  issues?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  WRONG_TIMES?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  NO_LONGER_ACTIVE?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

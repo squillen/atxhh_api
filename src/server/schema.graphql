@@ -54,7 +54,7 @@ type Restaurant {
 	cuisine: [Cuisine!]!
 	name: String!
 	rating: Rating!
-	warnings: [Warning!]
+	warnings: Warning
 	price: String!
 	url: String!
 	image: String!
@@ -118,10 +118,8 @@ type Coordinates {
 }
 
 type Warning {
-	id: ID
-	userID: ID
-	restaurantID: ID
-	issues: [String!]
+	WRONG_TIMES: Int!
+	NO_LONGER_ACTIVE: Int!
 }
 
 ##### INPUTS #####
@@ -131,9 +129,8 @@ input CoordinatesInput {
 }
 
 input WarningInput {
-	userID: ID!
-	restaurantID: ID!
-	issues: [String!]!
+	WRONG_TIMES: Int!
+	NO_LONGER_ACTIVE: Int!
 }
 
 input UpdateData {
@@ -154,7 +151,7 @@ input UpdateData {
 	percentOffFood: Int
 	coordinates: CoordinatesInput
 	address: String
-	warnings: [WarningInput!]
+	warnings: WarningInput
 	active: Boolean
 }
 
@@ -169,6 +166,11 @@ input RestaurantOrderByInput {
 enum GoFor {
 	DRINKS
 	FOOD
+}
+
+enum WarningEnum {
+	WRONG_TIMES
+	NO_LONGER_ACTIVE
 }
 
 enum Sort {

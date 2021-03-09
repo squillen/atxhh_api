@@ -18,7 +18,7 @@ model Restaurant {
   createdAt        DateTime  @default(now())
   name             String
   url              String
-  warnings         Warning[]
+  warnings         Json?
   image            String
   description      String
   happyHourDays    String[]
@@ -48,7 +48,6 @@ model User {
   password    String
   restaurants Restaurant[]
   votes       Vote[]
-  Warning     Warning[]
 }
 
 model Vote {
@@ -61,18 +60,14 @@ model Vote {
   @@unique([restaurauntID, userID])
 }
 
-model Warning {
-  id           Int         @id @default(autoincrement())
-  user         User        @relation(fields: [userID], references: [id])
-  issues       String[]
-  userID       Int
-  Restaurant   Restaurant? @relation(fields: [restaurantID], references: [id])
-  restaurantID Int?
-}
-
 enum Role {
   USER
   ADMIN
+}
+
+enum WarningEnum {
+  WRONG_TIMES
+  NO_LONGER_ACTIVE
 }
 
 enum Rating {
