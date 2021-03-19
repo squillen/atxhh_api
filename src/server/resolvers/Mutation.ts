@@ -123,20 +123,20 @@ const Mutation: MutationResolvers = {
 	updateRestaurant: async (_parent, args, context) => {
 		const { userRole } = context;
 		let success = false;
+		let restaurant;
 		const { id, data } = args;
-		if (userRole === ADMIN || data?.warnings) {
+		if (userRole === ADMIN || data.warnings) {
 			try {
-				const updatedRestaurant = await context.prisma.restaurant.update({
+				restaurant = await context.prisma.restaurant.update({
 					where: { id: +id },
-					data: { ...data },
+					data,
 				});
-				console.log('updatedRestaurant', updatedRestaurant)
 				success = true;
 			} catch (e) {
 				console.error(e);
 			}
 		}
-		return { success };
+		return { success, restaurant };
 	},
 
 	/**

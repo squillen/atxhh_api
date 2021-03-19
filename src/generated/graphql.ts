@@ -74,6 +74,7 @@ export type MutationCreateArgs = {
   coordinates: CoordinatesInput;
   address: Scalars['String'];
   active: Scalars['Boolean'];
+  warnings?: Maybe<WarningInput>;
 };
 
 
@@ -87,7 +88,7 @@ export type MutationSignupArgs = {
 
 export type MutationUpdateRestaurantArgs = {
   id: Scalars['ID'];
-  data?: Maybe<UpdateData>;
+  data: UpdateData;
 };
 
 
@@ -420,7 +421,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   create?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateArgs, 'name' | 'image' | 'url' | 'rating' | 'description' | 'happyHourDays' | 'startTime' | 'endTime' | 'cuisine' | 'price' | 'whatToGoFor' | 'when' | 'coordinates' | 'address' | 'active'>>;
   signup?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'name'>>;
-  updateRestaurant?: Resolver<Maybe<ResolversTypes['UpdatePayload']>, ParentType, ContextType, RequireFields<MutationUpdateRestaurantArgs, 'id'>>;
+  updateRestaurant?: Resolver<Maybe<ResolversTypes['UpdatePayload']>, ParentType, ContextType, RequireFields<MutationUpdateRestaurantArgs, 'id' | 'data'>>;
   login?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   deleteRestaurant?: Resolver<Maybe<ResolversTypes['DeletePayload']>, ParentType, ContextType, RequireFields<MutationDeleteRestaurantArgs, 'id'>>;
   deleteUser?: Resolver<Maybe<ResolversTypes['DeletePayload']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'id'>>;
